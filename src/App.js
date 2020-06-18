@@ -2,7 +2,8 @@ import React from "react";
 import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 import BookList from "./components/BookList/BookList";
-// import Search from "./components/Search/Search";
+import { Route } from "react-router-dom";
+import Search from "./components/Search/Search";
 
 class BooksApp extends React.Component {
   state = {
@@ -21,9 +22,16 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {/* <Search /> */}
-
-        {this.state.bookList && <BookList bookList={this.state.bookList} />}
+        <Route path="/search" component={Search} />
+        <Route
+          exact
+          path="/"
+          render={(props) =>
+            this.state.bookList && (
+              <BookList {...props} bookList={this.state.bookList} />
+            )
+          }
+        />
       </div>
     );
   }

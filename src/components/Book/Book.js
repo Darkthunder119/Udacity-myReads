@@ -21,7 +21,7 @@ export default function Book(props) {
         </div>
       </div>
   <div className="book-title">{props.book.title}</div>
-  <div className="book-authors">{props.book.authors[0]}</div>
+  {props.book.authors && <div className="book-authors">{props.book.authors.join(',')}</div>}
     </div>
   );
 }

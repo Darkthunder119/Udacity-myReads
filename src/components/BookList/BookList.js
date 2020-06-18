@@ -1,5 +1,6 @@
 import React from "react";
 import Book from "../Book/Book";
+import {Link} from 'react-router-dom';
 
 export default function BookList(props) {
   return (
@@ -54,7 +55,7 @@ export default function BookList(props) {
         </div>
       </div>
       <div className="open-search">
-        <button>Add a book</button>
+        <Link to="/search"><button>Add a book</button></Link>
       </div>
     </div>
   );
