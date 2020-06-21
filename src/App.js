@@ -34,13 +34,12 @@ class BooksApp extends React.Component {
     }
   }
   render() {
-    console.log(this.state.bookList, 'hi from App render');
     return (
       <div className="app">
         <Route
           path="/search"
           render={(props) => (
-            <Search {...props} shelfSwitcher={this.shelfSwitcher} />
+            <Search {...props} shelfSwitcher={this.shelfSwitcher} bookList={this.state.bookList}/>
           )}
         />
         <Route

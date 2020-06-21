@@ -7,7 +7,8 @@ import {debounce} from 'throttle-debounce';
 export default class Search extends React.Component {
   state = {
     searchString: '',
-    booksFound: ''
+    booksFound: '',
+    sameBooks: ''
   };
   onSearch = (e) => {
     this.setState({ searchString: e.target.value.trimStart()});
@@ -25,9 +26,13 @@ export default class Search extends React.Component {
       });
       debouncerSearch();
     }
+    if(this.props.bookList && Array.isArray(this.state.booksFound) && !this.state.sameBooks){
+      let shelfIds = this.state.booksFound.map(val => val.id );
+      let bookIds =this.props.bookList.filter(val=>shelfIds.includes(val.id));
+      this.setState({sameBooks: bookIds});
+    }
   }
   render() {
-    console.log(this.state.booksFound, 'search');
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -48,7 +53,7 @@ export default class Search extends React.Component {
             {this.state.booksFound && Array.isArray(this.state.booksFound) ? (
               this.state.booksFound.map((val, i) => (
                 <li key={i}>
-                  <Book book={val} shelfSwitcher={this.shelfSwitcher}/>
+                  <Book book={val} shelfSwitcher={this.shelfSwitcher} sameBooks={this.state.sameBooks}/>
                 </li>
               ))
             ) : (

@@ -2,6 +2,13 @@ import React from "react";
 import noImage from "../../icons/no_image_available.svg";
 
 export default function Book(props) {
+  if(props.sameBooks){
+    let foundMatch = props.sameBooks.find(val=> val.id === props.book.id);
+    if(foundMatch){
+    props.book.shelf = foundMatch.shelf;
+    }
+  }
+
   const shelfSwitcher=(event, book)=>{
     props.shelfSwitcher(event, book);
   }
@@ -19,7 +26,7 @@ export default function Book(props) {
           }}
         />
         <div className="book-shelf-changer">
-          <select value={props.book.shelf ? props.book.shelf : "none"} onChange={(event)=>shelfSwitcher(event, props.book)}>
+          <select value={props.book.shelf ? props.book.shelf : 'none'} onChange={(event)=>shelfSwitcher(event, props.book)}>
             <option value="move" disabled>
               Move to...
             </option>
