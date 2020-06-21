@@ -19,7 +19,7 @@ export default function Book(props) {
           }}
         />
         <div className="book-shelf-changer">
-          <select value={props.book ? props.book.shelf : "none"} onChange={(event)=>shelfSwitcher(event, props.book)}>
+          <select value={props.book.shelf ? props.book.shelf : "none"} onChange={(event)=>shelfSwitcher(event, props.book)}>
             <option value="move" disabled>
               Move to...
             </option>
