@@ -3,6 +3,9 @@ import Book from "../Book/Book";
 import {Link} from 'react-router-dom';
 
 export default function BookList(props) {
+  const shelfSwitcher=(event,book)=>{
+    props.shelfSwitcher(event,book);
+  }
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -16,9 +19,9 @@ export default function BookList(props) {
               <ol className="books-grid">
                 {props.bookList
                   .filter((val) => val.shelf === "currentlyReading")
-                  .map((val, i) => (
-                    <li key={i}>
-                      <Book book={val} />
+                  .map((val) => (
+                    <li key={val.id}>
+                      <Book book={val} shelfSwitcher={shelfSwitcher} />
                     </li>
                   ))}
               </ol>
@@ -30,9 +33,9 @@ export default function BookList(props) {
               <ol className="books-grid">
                 {props.bookList
                   .filter((val) => val.shelf === "wantToRead")
-                  .map((val, i) => (
-                    <li key={i}>
-                      <Book book={val} />
+                  .map((val) => (
+                    <li key={val.id}>
+                      <Book book={val} shelfSwitcher={shelfSwitcher} />
                     </li>
                   ))}
               </ol>
@@ -44,9 +47,9 @@ export default function BookList(props) {
               <ol className="books-grid">
                 {props.bookList
                   .filter((val) => val.shelf === "read")
-                  .map((val, i) => (
-                    <li key={i}>
-                      <Book book={val} />
+                  .map((val) => (
+                    <li key={val.id}>
+                      <Book book={val} shelfSwitcher={shelfSwitcher} />
                     </li>
                   ))}
               </ol>

@@ -4,31 +4,55 @@ import "./App.css";
 import BookList from "./components/BookList/BookList";
 import { Route } from "react-router-dom";
 import Search from "./components/Search/Search";
+import {throttle} from 'throttle-debounce';
 
 class BooksApp extends React.Component {
   state = {
     bookList: "",
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
+    currBook: "",
+    bookState: "",
   };
-
+  shelfSwitcher = (event, book) => {
+    this.setState({ currBook: book });
+    this.setState({ bookState: event.target.value });
+  };
   componentDidMount() {
     BooksAPI.getAll().then((data) => this.setState({ bookList: data }));
   }
+
+  componentDidUpdate() {
+    if (this.state.currBook) {
+      const throttlePut = throttle(50, false, ()=>{BooksAPI.update(this.state.currBook, this.state.bookState).then(
+        (info) => {
+          console.log(info);
+          BooksAPI.getAll().then((data) =>
+            this.setState({ bookList: data, currBook: "", bookState: "" })
+          );
+        }
+      )});
+      throttlePut();
+    }
+  }
   render() {
+    console.log(this.state.bookList, 'hi from App render');
     return (
       <div className="app">
-        <Route path="/search" component={Search} />
+        <Route
+          path="/search"
+          render={(props) => (
+            <Search {...props} shelfSwitcher={this.shelfSwitcher} />
+          )}
+        />
         <Route
           exact
           path="/"
           render={(props) =>
             this.state.bookList && (
-              <BookList {...props} bookList={this.state.bookList} />
+              <BookList
+                {...props}
+                bookList={this.state.bookList}
+                shelfSwitcher={this.shelfSwitcher}
+              />
             )
           }
         />
