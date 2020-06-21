@@ -2,6 +2,7 @@ import React from "react";
 import noImage from "../../icons/no_image_available.svg";
 
 export default function Book(props) {
+  //check to see if the current book matches any of the duplicate books from the shelves, if they do, set the shelf to the correct value
   if(props.sameBooks){
     let foundMatch = props.sameBooks.find(val=> val.id === props.book.id);
     if(foundMatch){

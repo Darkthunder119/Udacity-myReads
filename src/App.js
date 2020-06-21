@@ -12,6 +12,7 @@ class BooksApp extends React.Component {
     currBook: "",
     bookState: "",
   };
+  //the following function fetches the current Book and the current value set to it from the Select element in the Book Component
   shelfSwitcher = (event, book) => {
     this.setState({ currBook: book });
     this.setState({ bookState: event.target.value });
@@ -21,10 +22,10 @@ class BooksApp extends React.Component {
   }
 
   componentDidUpdate() {
+    //the following checks to see if the currBook state exists, aka if a book's shelf has been set, it sends a throttled Put request to the API and then retrieves the list of books on the shelves again
     if (this.state.currBook) {
       const throttlePut = throttle(50, false, ()=>{BooksAPI.update(this.state.currBook, this.state.bookState).then(
         (info) => {
-          console.log(info);
           BooksAPI.getAll().then((data) =>
             this.setState({ bookList: data, currBook: "", bookState: "" })
           );

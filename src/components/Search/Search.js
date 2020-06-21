@@ -10,6 +10,8 @@ export default class Search extends React.Component {
     booksFound: '',
     sameBooks: ''
   };
+  //resetting booksFound on every search since we really don't want our componentDidUpdate to be stuck in an infinite loop as well as 
+  //making sure that conditional debounced Search request goes through on "EVERY" character change.
   onSearch = (e) => {
     this.setState({ searchString: e.target.value.trimStart()});
     this.setState({ booksFound: ""});
@@ -26,6 +28,9 @@ export default class Search extends React.Component {
       });
       debouncerSearch();
     }
+    //The following checks to see if the prop bookList exists, if the current search results is an Array (this is important)
+    //since the default error return is an Object state so u want to ignore Objects and if this is the case,
+    //cross check the 2 lists of books for duplicates and then save the ones from the shelves aka props.bookList in state to pass down
     if(this.props.bookList && Array.isArray(this.state.booksFound) && !this.state.sameBooks){
       let shelfIds = this.state.booksFound.map(val => val.id );
       let bookIds =this.props.bookList.filter(val=>shelfIds.includes(val.id));
